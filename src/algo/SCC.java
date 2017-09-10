@@ -17,7 +17,7 @@ public class SCC {
 	BufferedReader br;
 	static int t=0;
 	static String s;
-	int maxVal;
+	int maxVal,minVal;
 	Set<String> v=new HashSet<String>();
 	Map<String,ArrayList<String>> e=new HashMap<String, ArrayList<String>>();
 	int n;
@@ -29,16 +29,16 @@ public class SCC {
 		// TODO Auto-generated method stub
 		SCC obj = new SCC();
 		MergeSort sort=new MergeSort();
-		ArrayList<String> arrList = obj.readFile("2sat1");
+		ArrayList<String> arrList = obj.readFile("scctest");
 		
 		System.out.println("Read File");
-		String vArr[]=Arrays.copyOf(obj.v.toArray(),obj.v.toArray().length,String[].class); 
+//		String vArr[]=Arrays.copyOf(obj.v.toArray(),obj.v.toArray().length,String[].class); 
 		
-		String vArrSorted[]=sort.sort(vArr,vArr.length);
-		vArr=sort.sort(vArr,vArr.length);								
+//		String vArrSorted[]=sort.sort(vArr,vArr.length);
+//		vArr=sort.sort(vArr,vArr.length);								
 		
-		for(int i=0;i<vArr.length;i++) {
-			obj.explored.put(vArr[i],false);
+		for(int i=obj.minVal;i<obj.maxVal+1;i++) {
+			obj.explored.put(Integer.toString(i),false);
 		}
 		
 /*		for(int i=0;i<vArr.length;i++) {
@@ -50,7 +50,7 @@ public class SCC {
 		Map<String,ArrayList<String>> graphRev = obj.adjacencyRev(arrList);
 		System.out.println("adjRev");
 		
-		obj.DFSLoop(graphRev,vArrSorted);
+	/*	obj.DFSLoop(graphRev,vArrSorted);
 		
 		System.out.println("DFS Loop on Rev");
 		
@@ -71,87 +71,10 @@ public class SCC {
 		for(int i=1;i<vArr.length;i++) {
 			obj.explored.put(vArr[i],false);
 		}		
-/*		obj.DFSLoop(graphOrder);
+		obj.DFSLoop(graphOrder);
 		System.out.println("DFS Loop on Ordered");*/
 		
-		
-//Count SCC size
 
-/*		int tmp=0, leadNode;
-//		HashMap<Integer,Integer> leaders = new HashMap<Integer, Integer>();
-		for(i=1;i<=maxVal;i++) {
-			leadNode = obj.leader.get(i);
-			if(leaders.containsKey(leadNode)) {
-				tmp = leaders.get(leadNode);
-				tmp++;
-				leaders.put(leadNode, tmp);
-			}
-			else {
-				leaders.put(leadNode, 1);
-			}			
-		}
-
-//		Print SCCs
-		int maxSCC = 0,maxKey = 0;
-		for(Map.Entry m:leaders.entrySet()) {
-//			System.out.println(m.getKey() + ": " + m.getValue());
-			if(maxSCC < (int)m.getValue()) {
-				maxSCC = (int)m.getValue();
-				maxKey = (int)m.getKey();
-			}
-		}
-		
-		System.out.println(maxKey + ": " + maxSCC);
-		leaders.remove(maxKey);
-		maxSCC = 0;maxKey = 0;
-		for(Map.Entry n:leaders.entrySet()) {
-//			System.out.println(m.getKey() + ": " + m.getValue());
-			if(maxSCC < (int)n.getValue()) {
-				maxSCC = (int)n.getValue();
-				maxKey = (int)n.getKey();
-			}
-		}
-		
-		System.out.println(maxKey + ": " + maxSCC);
-		leaders.remove(maxKey);
-
-		maxSCC = 0;maxKey = 0;
-		for(Map.Entry n:leaders.entrySet()) {
-//			System.out.println(m.getKey() + ": " + m.getValue());
-			if(maxSCC < (int)n.getValue()) {
-				maxSCC = (int)n.getValue();
-				maxKey = (int)n.getKey();
-			}
-		}
-		
-		System.out.println(maxKey + ": " + maxSCC);
-		leaders.remove(maxKey);
-
-		maxSCC = 0;maxKey = 0;
-		for(Map.Entry n:leaders.entrySet()) {
-//			System.out.println(m.getKey() + ": " + m.getValue());
-			if(maxSCC < (int)n.getValue()) {
-				maxSCC = (int)n.getValue();
-				maxKey = (int)n.getKey();
-			}
-		}
-		
-		System.out.println(maxKey + ": " + maxSCC);
-		leaders.remove(maxKey);
-
-		maxSCC = 0;maxKey = 0;
-		for(Map.Entry n:leaders.entrySet()) {
-//			System.out.println(m.getKey() + ": " + m.getValue());
-			if(maxSCC < (int)n.getValue()) {
-				maxSCC = (int)n.getValue();
-				maxKey = (int)n.getKey();
-			}
-		}
-		
-		System.out.println(maxKey + ": " + maxSCC);
-		leaders.remove(maxKey);
-
-*/
 	}
 	public void DFSLoop(Map<String,ArrayList<String>> Graph, String vArrSorted[]) {
 		
@@ -264,10 +187,10 @@ public class SCC {
 			br.close();
 			fr.close();
 			ArrayList<String> strList=new ArrayList<String>();
-			n=Integer.parseInt(fileList.get(0));
+//			n=Integer.parseInt(fileList.get(0));
 			String a,b,nega,negb;
 			
-			int k=0;
+/*			int k=0;
 			for(int j=1;j<fileList.size();j++) {
 				a=fileList.get(j).split(" ")[0];
 				b=fileList.get(j).split(" ")[1];
@@ -287,10 +210,22 @@ public class SCC {
 				strList.add(negb+" "+a);
 				v.add(a);
 				v.add(b);
-			}
+			}*/
 						
+			maxVal=0;
+			minVal=Integer.MAX_VALUE;
+			for(int j=0;j<fileList.size();j++) {
+				if(maxVal<Integer.parseInt(fileList.get(j).split(" ")[0]))
+					maxVal=Integer.parseInt(fileList.get(j).split(" ")[0]);
+				if(maxVal<Integer.parseInt(fileList.get(j).split(" ")[1]))
+					maxVal=Integer.parseInt(fileList.get(j).split(" ")[1]);
+				if(minVal>Integer.parseInt(fileList.get(j).split(" ")[0]))
+					minVal=Integer.parseInt(fileList.get(j).split(" ")[0]);
+				if(minVal>Integer.parseInt(fileList.get(j).split(" ")[1]))
+					minVal=Integer.parseInt(fileList.get(j).split(" ")[1]);														
+			}
 
-			return strList;
+			return fileList;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
